@@ -1,15 +1,15 @@
 # 01 - Basic System Audit
 
-Bootcamp assignment: `system_audit_exam.sh` collects basic information about
+Bootcamp assignment: `MahanShamsi_linux__01.sh` collects basic information about
 users, system, configuration/log files and permissions, then archives the results.
 
 ## Usage
 
 ```bash
-./system_audit_exam.sh
+./MahanShamsi_linux__01.sh
 ```
 
-Output directory: `~/exam_results/audit`. Archive: `~/exam_results/audit.zip`.
+Output directory: `~/exam_results/audit`. Archive: `~/exam_results/MahanShamsi_linux__01.zip`.
 
 ## Behavior
 
@@ -18,7 +18,7 @@ Output directory: `~/exam_results/audit`. Archive: `~/exam_results/audit.zip`.
 3. Records kernel name/version, architecture, and the first 3 / last 2 lines of `/etc/group`.
 4. Lists `.conf` files under `/etc` and the 10 largest files under `/var/log`.
 5. Backs up `/etc/hosts` as `hosts.bak` (mode 600) and records `ls -l hosts.bak`.
-6. Creates `audit.zip`, **then** removes all `.txt` files except `hosts_perm.txt` and `notes.txt`.
+6. Creates the ZIP archive, **then** removes all `.txt` files except `hosts_perm.txt` and `notes.txt`.
 
 ## Interpretation decisions
 

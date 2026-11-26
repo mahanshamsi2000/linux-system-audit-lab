@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# system_audit_exam.sh - Basic system audit (bootcamp assignment)
+# MahanShamsi_linux__01.sh - Basic system audit (bootcamp assignment)
 
 set -u
 
 AUDIT_DIR="$HOME/exam_results/audit"
-ZIP_FILE="$HOME/exam_results/audit.zip"
+ZIP_FILE="$HOME/exam_results/MahanShamsi_linux__01.zip"
 RUN_DIR="$(pwd)"   # captured before any cd: the directory the script was run from
 
 # write_heading FILE TITLE: create FILE containing a single comment heading
