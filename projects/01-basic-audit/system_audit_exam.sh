@@ -39,10 +39,19 @@ collect_system() {
     tail -n 2 /etc/group >> "$AUDIT_DIR/group_summary.txt"
 }
 
+find_files() {
+    write_heading "$AUDIT_DIR/conf_files.txt" ".conf files under /etc (unreadable directories skipped)"
+    find /etc -type f -name '*.conf' 2>/dev/null | sort >> "$AUDIT_DIR/conf_files.txt"
+
+    write_heading "$AUDIT_DIR/top_logs.txt" "10 largest files under /var/log (size in bytes, path)"
+    find /var/log -type f -printf '%s %p\n' 2>/dev/null | sort -rn | head -n 10 >> "$AUDIT_DIR/top_logs.txt"
+}
+
 main() {
     setup_directory
     collect_users
     collect_system
+    find_files
 }
 
 main "$@"
