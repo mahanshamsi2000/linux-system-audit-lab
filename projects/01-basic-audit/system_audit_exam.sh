@@ -4,6 +4,7 @@
 set -u
 
 AUDIT_DIR="$HOME/exam_results/audit"
+ZIP_FILE="$HOME/exam_results/audit.zip"
 RUN_DIR="$(pwd)"   # captured before any cd: the directory the script was run from
 
 # write_heading FILE TITLE: create FILE containing a single comment heading
@@ -47,11 +48,37 @@ find_files() {
     find /var/log -type f -printf '%s %p\n' 2>/dev/null | sort -rn | head -n 10 >> "$AUDIT_DIR/top_logs.txt"
 }
 
+backup_hosts() {
+    cp /etc/hosts "$AUDIT_DIR/hosts.bak"
+    chmod 600 "$AUDIT_DIR/hosts.bak"
+    write_heading "$AUDIT_DIR/hosts_perm.txt" "Output of: ls -l hosts.bak"
+    (cd "$AUDIT_DIR" && ls -l hosts.bak) >> "$AUDIT_DIR/hosts_perm.txt"
+}
+
+# The ZIP is created BEFORE cleanup so it contains every generated file.
+create_zip() {
+    rm -f "$ZIP_FILE"
+    (cd "$(dirname "$AUDIT_DIR")" && zip -r -q "$ZIP_FILE" "$(basename "$AUDIT_DIR")")
+}
+
+# Remove all .txt files in the audit directory except hosts_perm.txt and notes.txt.
+cleanup() {
+    if [ -z "$AUDIT_DIR" ] || [ ! -d "$AUDIT_DIR" ]; then
+        echo "cleanup: invalid AUDIT_DIR, aborting" >&2
+        return 1
+    fi
+    find "$AUDIT_DIR" -maxdepth 1 -type f -name '*.txt' \
+        ! -name 'hosts_perm.txt' ! -name 'notes.txt' -delete
+}
+
 main() {
     setup_directory
     collect_users
     collect_system
     find_files
+    backup_hosts
+    create_zip
+    cleanup
 }
 
 main "$@"
