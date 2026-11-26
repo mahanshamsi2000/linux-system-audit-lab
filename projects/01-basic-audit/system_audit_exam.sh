@@ -29,9 +29,20 @@ collect_users() {
     sed 's#/bin/bash#/usr/bin/zsh#g' /etc/passwd | head -n 5 >> "$AUDIT_DIR/shell_preview.txt"
 }
 
+collect_system() {
+    write_heading "$AUDIT_DIR/sysinfo.txt" "Kernel name/version (uname -sr) and architecture (arch)"
+    uname -sr >> "$AUDIT_DIR/sysinfo.txt"
+    arch >> "$AUDIT_DIR/sysinfo.txt"
+
+    write_heading "$AUDIT_DIR/group_summary.txt" "First 3 and last 2 lines of /etc/group"
+    head -n 3 /etc/group >> "$AUDIT_DIR/group_summary.txt"
+    tail -n 2 /etc/group >> "$AUDIT_DIR/group_summary.txt"
+}
+
 main() {
     setup_directory
     collect_users
+    collect_system
 }
 
 main "$@"
